@@ -8,6 +8,7 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = { todos: [] };
+    this.getTodos = this.getTodos.bind(this);
   }
   componentDidMount() {
     this.getTodos();
@@ -20,15 +21,19 @@ export default class App extends React.Component {
         this.setState({ todos: response });
       })
       .catch(err => {
-        console.error("error fetching json");
+
+        console.error("error fetching json", err);
         this.setState({ todos: [] });
       });
+  }
+  testFn() {
+    console.log("i am called at testFn");
   }
   render() {
     return (
       <div className="container">
-        <Form />
-        <List todos={this.state.todos} updateList={this.getTodos} />
+        <Form updateList={this.getTodos} />
+        <List todos={this.state.todos} />
       </div>
     );
   }

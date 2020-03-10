@@ -9,12 +9,14 @@ export default class Form extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
-
+  componentDidMount() {}
   onSubmit() {
     const now = new Date();
     const todo = JSON.parse(JSON.stringify(this.state.todo));
     todo.id = now.getTime();
-    this.setState({ disabled: true });
+    todo.userId = 1;
+    todo.completed = false;
+    // this.setState({ disabled: true });
     fetch(Constants.baseUrl + "/todos", {
       method: "POST", // or 'PUT'
       headers: {
@@ -23,9 +25,14 @@ export default class Form extends React.Component {
       body: JSON.stringify(todo)
     })
       .then(response => response.json())
-      .then(response => this.props.updateList())
-      .catch(err => console.log(err));
-    console.log(todo);
+      .then(response => {
+        console.log("success");
+        this.props.updateList();
+      })
+      .catch(err => {
+        console.log("err");
+        this.props.updateList();
+      });
   }
   handleChange(event) {
     const todo = JSON.parse(JSON.stringify(this.state.todo));
