@@ -7,33 +7,32 @@ import { Constants } from "./Constants";
 export default class App extends React.Component {
   constructor() {
     super();
-    this.state = { todos: [] };
+    this.state = { todos: [], todo:{} };
     this.getTodos = this.getTodos.bind(this);
+    this.onEdit = this.onEdit.bind(this);
   }
   componentDidMount() {
     this.getTodos();
   }
   getTodos() {
-    console.log("i am call");
     fetch(Constants.baseUrl + "/todos")
       .then(res => res.json())
       .then(response => {
         this.setState({ todos: response });
       })
       .catch(err => {
-
         console.error("error fetching json", err);
         this.setState({ todos: [] });
       });
   }
-  testFn() {
-    console.log("i am called at testFn");
+  onEdit(todo){
+    this.setState({todo:todo})
   }
   render() {
     return (
       <div className="container">
-        <Form updateList={this.getTodos} />
-        <List todos={this.state.todos} />
+        <Form updateList={this.getTodos} todo={this.state.todo}/>
+        <List todos={this.state.todos} onEdit={this.onEdit}/>
       </div>
     );
   }
